@@ -1,21 +1,27 @@
 <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+    <h1 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight mb-2">Stocks</h1>
     <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
-                <th scope="col" class="px-6 py-3">
+                <th scope="col" class="px-5 py-3">
                     
                 </th>
-                <th scope="col" class="px-6 py-3">
+                <th scope="col" class="px-5 py-3">
                     <div class="flex items-center">
                         Asset Code
                     </div>
                 </th>
-                <th scope="col" class="px-6 py-3">
+                <th scope="col" class="px-5 py-3">
+                    <div class="flex items-center">
+                        Qty.
+                    </div>
+                </th>
+                <th scope="col" class="px-5 py-3">
                     <div class="flex items-center">
                         Average Price
                     </div>
                 </th>
-                <th scope="col" class="px-6 py-3">
+                <th scope="col" class="px-5 py-3">
                     <div class="flex items-center">
                         Current Price
                         <a href="#"><svg class="w-3 h-3 ml-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
@@ -23,7 +29,7 @@
                         </svg></a>
                     </div>
                 </th>
-                <th scope="col" class="px-6 py-3">
+                <th scope="col" class="px-5 py-3">
                     <div class="flex items-center">
                         Daily Variation
                         <a href="#"><svg class="w-3 h-3 ml-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
@@ -31,7 +37,7 @@
                         </svg></a>
                     </div>
                 </th>
-                <th scope="col" class="px-6 py-3">
+                <th scope="col" class="px-5 py-3">
                     <div class="flex items-center">
                         Daily Variation
                         <a href="#"><svg class="w-3 h-3 ml-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
@@ -39,7 +45,7 @@
                         </svg></a>
                     </div>
                 </th>
-                <th scope="col" class="px-6 py-3">
+                <th scope="col" class="px-5 py-3">
                     <div class="flex items-center">
                         Total Variation
                         <a href="#"><svg class="w-3 h-3 ml-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
@@ -47,7 +53,7 @@
                         </svg></a>
                     </div>
                 </th>
-                <th scope="col" class="px-6 py-3">
+                <th scope="col" class="px-5 py-3">
                     <div class="flex items-center">
                         Total Variation
                         <a href="#"><svg class="w-3 h-3 ml-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
@@ -55,7 +61,7 @@
                         </svg></a>
                     </div>
                 </th>
-                <th scope="col" class="px-6 py-3">
+                <th scope="col" class="px-5 py-3">
                     <div class="flex items-center">
                         Total Amount
                         <a href="#"><svg class="w-3 h-3 ml-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
@@ -63,7 +69,7 @@
                         </svg></a>
                     </div>
                 </th>
-                <th scope="col" class="px-6 py-3">Actions</th>
+                <th scope="col" class="px-5 py-3">Actions</th>
             </tr>
         </thead>
 
@@ -71,39 +77,77 @@
             @foreach ($assets as $key => $asset)
 
                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                    <td class="px-6 py-4 flex items-center">
-                        <img src="{{ $api[$key]['asset_logo']}}" alt="asset-logo" width="250px">
+                    <td class="px-4 py-4 flex items-center">
+                        <img src="{{ $api[$key]['asset_logo']}}" alt="asset-logo" width="130px">
                     </td>
-                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    <th scope="row" class="px-4 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                         {{ $asset->code }}
                     </th>
-                    <td class="px-6 py-4">
+                    <td class="px-4 py-4">
+                        {{ $asset->quantity }}
+                    </td>
+                    <td class="px-4 py-4">
                         R$ {{ $asset->average_price }}
                     </td>
-                    <td class="px-6 py-4">
+                    <td class="px-4 py-4">
                         R$ {{ $api[$key]['current_price'] }}
                     </td>
-                    <td class="px-6 py-4">
+                    <td class="px-4 py-4">
                         {{ $api[$key]['daily_variation'] }}%
                     </td>
-                    <td class="px-6 py-4">
+                    <td class="px-4 py-4">
                         R$ {{ $api[$key]['daily_money_variation'] }}
                     </td>
-                    <td class="px-6 py-4">
+                    <td class="px-4 py-4">
                         {{ $api[$key]['total_percent_variation'] }}%
                     </td>
-                    <td class="px-6 py-4">
+                    <td class="px-4 py-4">
                         R$ {{ $api[$key]['total_money_variation'] }}
                     </td>
-                    <td class="px-6 py-4">
+                    <td class="px-4 py-4">
                         R$ {{ $api[$key]['patrimony'] }}
                     </td>
-                    <td class="px-6 py-4 text-right">
-                        <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
+                    <td class="px-4 py-4 text-right">
+
+                        <button type="submit" class="dark:text-blue-500 hover:underline mx-2"><ion-icon name="create-outline" class="w-4 h-4"></ion-icon></a>
+
+                        <form action="{{ route('assets.destroy', $asset->id) }}" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="dark:text-red-500 hover:underline"><ion-icon name="trash-outline" class="w-4 h-4"></ion-icon></a>
+                        </form>
+                        
                     </td>
                 </tr>
 
             @endforeach
         </tbody>
     </table>
+    
+<!-- Modal toggle -->
+    <button data-modal-target="authentication-modal" data-modal-toggle="authentication-modal" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mt-5" type="button">
+        + New Asset
+    </button>
+
 </div>
+
+@include('assets.create-modal')
+
+
+
+{{-- Modal script --}}
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const modalButton = document.querySelector('[data-modal-toggle="authentication-modal"]');
+        const modal = document.getElementById('authentication-modal');
+
+        modalButton.addEventListener("click", function () {
+            modal.classList.toggle('hidden');
+        });
+
+        const closeButton = document.querySelector('[data-modal-hide="authentication-modal"]');
+        closeButton.addEventListener("click", function () {
+            modal.classList.toggle('hidden');
+        });
+    });
+</script>

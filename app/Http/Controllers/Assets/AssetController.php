@@ -27,16 +27,12 @@ class AssetController extends Controller
         return view('assets.show', compact('asset'));
     }
 
-    public function create()
-    {
-        return view('assets.create');
-    }
-
     public function store(Request $request)
     {
         $data = $request->all();
         $data['user_id'] = Auth::user()->id;
         $data['status'] = 1;
+        $data['name'] = 'Só teste';
         $data['average_price'] = preg_replace('/,(\d+)/', '.$1', $data['average_price']);
         Asset::create($data);
 

@@ -28,6 +28,5 @@ Route::delete('/assets/{id}', [AssetController::class, 'destroy'])->name('assets
 Route::get('/assets/edit/{id}', [AssetController::class, 'edit'])->name('assets.edit');
 Route::put('/assets/{id}', [AssetController::class, 'update'])->name('assets.update');
 Route::post('/assets/store', [AssetController::class, 'store'])->name('assets.store');
-Route::get('/assets/create', [AssetController::class, 'create'])->name('assets.create');
 Route::get('/assets/show/{id}', [AssetController::class, 'show'])->name('assets.show');
 Route::get('/assets', [AssetController::class, 'index'])->name('assets.index');
