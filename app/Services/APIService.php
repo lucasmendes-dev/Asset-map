@@ -16,18 +16,18 @@ class APIService
     {
         $this->assets = Asset::all();
         $this->apiValues = $this->fetchData();
-        $this->processedData = $this->apiValues !== null ? $this->buildArrayWithAllValues() : null; //dd($this->processedData);
+        $this->processedData = $this->checkApiValues();
     }
 
     private function fetchData()
     {
         $tickers = $this->getAssetTicker();
         if (!empty($tickers)) {
-            $response = Http::get("https://brapi.dev/api/quote/$tickers?range=1d&interval=1d&fundamental=false");
+            $response = Http::get("https://brapi.dev/api/quote/$tickers?range=1d&interval=1d&fundamental=false"); //dd($response);
             if ($response->successful()) {
                 return $response->json()['results'];
             } else {
-                throw new \Exception('Failed to fetch data from API');
+                return null;
             }
         } else {
             return null;
@@ -145,5 +145,20 @@ class APIService
     private function getAssetLogo(): array
     {
         return collect($this->apiValues)->pluck('logourl')->all();
+    }
+
+    private function checkApiValues()
+    {
+        switch ($this->apiValues) {
+            case null:
+                return null;
+                break;
+            case false:
+                return false;
+                break;
+            default:
+                return $this->buildArrayWithAllValues();
+                break;
+        }
     }
 }

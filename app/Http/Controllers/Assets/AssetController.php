@@ -18,7 +18,16 @@ class AssetController extends Controller
     {
         $assets = Asset::all();
         $api = $this->service->processedData; //dd($api);
-        return view('assets.index')->with(['assets' => $assets, 'api' => $api]);
+
+        switch ($api) {
+            case false:
+                return view('assets.api-error');
+                break;
+            case null:
+            default:
+                return view('assets.index')->with(['assets' => $assets, 'api' => $api]);
+                break;
+        }
     }
 
     public function show(string $id)
