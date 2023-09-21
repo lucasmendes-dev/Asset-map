@@ -114,7 +114,8 @@
                         <form action="{{ route('assets.destroy', $asset->id) }}" method="POST">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="dark:text-red-500 hover:underline"><ion-icon name="trash-outline" class="w-4 h-4"></ion-icon></a>
+                            {{-- <button type="submit" class="dark:text-red-500 hover:underline"></a> --}}
+                            <button data-modal-target="popup-modal" data-modal-toggle="popup-modal" class="dark:text-red-500 hover:underline" type="button"><ion-icon name="trash-outline" class="w-4 h-4"></ion-icon></button>
                         </form>
                         
                     </td>
@@ -132,7 +133,7 @@
 </div>
 
 @include('assets.create-modal')
-
+@include('assets.delete-modal')
 
 
 {{-- Modal script --}}
@@ -150,4 +151,25 @@
             modal.classList.toggle('hidden');
         });
     });
+
+    
+    // Função para abrir a modal
+    function openModal() {
+        var modal = document.getElementById('popup-modal');
+        modal.classList.remove('hidden');
+    }
+
+    // Função para fechar a modal
+    function closeModal() {
+        var modal = document.getElementById('popup-modal');
+        modal.classList.add('hidden');
+    }
+
+    // Adicione um evento de clique ao botão para abrir a modal
+    var openButton = document.querySelector('[data-modal-toggle="popup-modal"]');
+    openButton.addEventListener('click', openModal);
+
+    // Adicione um evento de clique ao botão "No, cancel" para fechar a modal
+    var closeButton = document.querySelector('[data-modal-hide="popup-modal"]');
+    closeButton.addEventListener('click', closeModal);
 </script>
