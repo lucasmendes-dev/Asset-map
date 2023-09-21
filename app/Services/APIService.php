@@ -27,7 +27,7 @@ class APIService
             if ($response->successful()) {
                 return $response->json()['results'];
             } else {
-                return null;
+                return false;
             }
         } else {
             return null;
@@ -151,10 +151,10 @@ class APIService
     {
         switch ($this->apiValues) {
             case null:
-                return null;
+                return "no assets";
                 break;
             case false:
-                return false;
+                return "error";
                 break;
             default:
                 return $this->buildArrayWithAllValues();

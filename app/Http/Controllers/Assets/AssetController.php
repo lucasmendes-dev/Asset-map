@@ -20,10 +20,12 @@ class AssetController extends Controller
         $api = $this->service->processedData; //dd($api);
 
         switch ($api) {
-            case false:
+            case $api === "error":
                 return view('assets.api-error');
                 break;
-            case null:
+            case $api == "no assets":
+                return view('assets.first-in');
+                break;
             default:
                 return view('assets.index')->with(['assets' => $assets, 'api' => $api]);
                 break;

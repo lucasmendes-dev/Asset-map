@@ -109,14 +109,13 @@
                     </td>
                     <td class="px-4 py-4 text-right">
 
-                        <button type="submit" class="dark:text-blue-500 hover:underline mx-2"><ion-icon name="create-outline" class="w-4 h-4"></ion-icon></a>
+                        <a href="{{ route('assets.edit', $asset->id) }}" class="dark:text-blue-500 hover:underline mx-2">
+                            <ion-icon name="create-outline" class="w-4 h-4"></ion-icon>
+                        </a>
 
-                        <form action="{{ route('assets.destroy', $asset->id) }}" method="POST">
-                            @csrf
-                            @method('DELETE')
-                            {{-- <button type="submit" class="dark:text-red-500 hover:underline"></a> --}}
-                            <button data-modal-target="popup-modal" data-modal-toggle="popup-modal" class="dark:text-red-500 hover:underline" type="button"><ion-icon name="trash-outline" class="w-4 h-4"></ion-icon></button>
-                        </form>
+                        <button data-record-id="{{ $asset->id }}" class="dark:text-red-500 hover:underline delete-button" type="button">
+                            <ion-icon name="trash-outline" class="w-4 h-4"></ion-icon>
+                        </button>
                         
                     </td>
                 </tr>
@@ -126,50 +125,72 @@
     </table>
     
 <!-- Modal toggle -->
-    <button data-modal-target="authentication-modal" data-modal-toggle="authentication-modal" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mt-5" type="button">
+    <button data-modal-target="form-modal" data-modal-toggle="form-modal" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mt-5" type="button">
         + New Asset
     </button>
 
 </div>
 
-@include('assets.create-modal')
+@include('assets.form-modal')
 @include('assets.delete-modal')
 
 
 {{-- Modal script --}}
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        const modalButton = document.querySelector('[data-modal-toggle="authentication-modal"]');
-        const modal = document.getElementById('authentication-modal');
+        const modalButton = document.querySelector('[data-modal-toggle="form-modal"]');
+        const modal = document.getElementById('form-modal');
 
         modalButton.addEventListener("click", function () {
             modal.classList.toggle('hidden');
         });
 
-        const closeButton = document.querySelector('[data-modal-hide="authentication-modal"]');
+        const closeButton = document.querySelector('[data-modal-hide="form-modal"]');
         closeButton.addEventListener("click", function () {
             modal.classList.toggle('hidden');
         });
     });
 
+
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const deleteButtons = document.querySelectorAll('.delete-button');
+        const deleteConfirmationModal = document.getElementById('delete-confirmation-modal');
+        const deleteConfirmButton = document.getElementById('delete-confirm-button');
+        const deleteCancelButton = document.getElementById('delete-cancel-button');
+
+        let deleteRecordId = null;
+
+        function showDeleteConfirmationModal(recordId) {
+            deleteRecordId = recordId;
+            deleteConfirmationModal.classList.remove('hidden');
+        }
+
+        deleteButtons.forEach((button) => {
+            button.addEventListener('click', function () {
+                const recordId = this.getAttribute('data-record-id');
+                showDeleteConfirmationModal(recordId);
+            });
+        });
+
+        deleteConfirmButton.addEventListener('click', function () {
+            if (deleteRecordId !== null) {
+                fetch(`/assets/${deleteRecordId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'Content-Type': 'application/json'
+                    },
+                })
+                .then(response => {
+                    window.location.reload();
+                });
+            }
+        });
+
+        deleteCancelButton.addEventListener('click', function () {
+            deleteConfirmationModal.classList.add('hidden');
+        });
+    });
     
-    // Função para abrir a modal
-    function openModal() {
-        var modal = document.getElementById('popup-modal');
-        modal.classList.remove('hidden');
-    }
-
-    // Função para fechar a modal
-    function closeModal() {
-        var modal = document.getElementById('popup-modal');
-        modal.classList.add('hidden');
-    }
-
-    // Adicione um evento de clique ao botão para abrir a modal
-    var openButton = document.querySelector('[data-modal-toggle="popup-modal"]');
-    openButton.addEventListener('click', openModal);
-
-    // Adicione um evento de clique ao botão "No, cancel" para fechar a modal
-    var closeButton = document.querySelector('[data-modal-hide="popup-modal"]');
-    closeButton.addEventListener('click', closeModal);
 </script>
