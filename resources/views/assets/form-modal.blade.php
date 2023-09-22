@@ -30,8 +30,8 @@
                         <input type="number" min="0" name="quantity" id="quantity" placeholder="0" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required>
                     </div>
                     <div class="w-1/2">
-                        <label for="asset_type" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Type</label>
-                        <select name="asset_type" id="asset_type" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white">
+                        <label for="type" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Type</label>
+                        <select name="type" id="type" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white">
                             <option value="stocks">Stocks</option>
                             <option value="reit">Reit</option>
                             <option value="crypto">Crypto</option>

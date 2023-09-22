@@ -3,27 +3,30 @@
 namespace App\Services;
 
 use App\Models\Assets\Asset;
+use App\Models\User;
 use Illuminate\Support\Facades\Http;
 
 
 class APIService
 {
-    private $assets;
+    protected $user;
+    public $assets;
     private $apiValues;
     public $processedData;
 
-    public function __construct()
+    public function __construct(User $user)
     {
-        $this->assets = Asset::all();
+        $this->user = $user;
+        $this->assets = Asset::where('user_id', $user->id)->get();
         $this->apiValues = $this->fetchData();
-        $this->processedData = $this->checkApiValues();
+        $this->processedData = $this->checkApiValues(); //dd($this->processedData);
     }
 
     private function fetchData()
     {
         $tickers = $this->getAssetTicker();
         if (!empty($tickers)) {
-            $response = Http::get("https://brapi.dev/api/quote/$tickers?range=1d&interval=1d&fundamental=false"); //dd($response);
+            $response = Http::get("https://brapi.dev/api/quote/$tickers?range=1d&interval=1d&fundamental=false");
             if ($response->successful()) {
                 return $response->json()['results'];
             } else {

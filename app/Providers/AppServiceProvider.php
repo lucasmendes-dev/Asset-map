@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Services\APIService;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -11,7 +13,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->bind(APIService::class, function ($app) {
+            return new APIService(Auth::user());
+        });
     }
 
     /**

@@ -5,7 +5,7 @@
                 <svg class="w-16 h-16 text-green-600 mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                 </svg>
-                <h1 class="text-3xl md:text-4xl font-semibold text-gray-900 dark:text-gray-100 mt-4">Seja bem-vindo, {{ Auth::user()->name }}!</h1>
+                <h1 class="text-3xl md:text-4xl font-semibold text-gray-900 dark:text-gray-100 mt-4">Seja bem-vindo(a), {{ Auth::user()->name }}!</h1>
                 <p class="text-lg text-gray-600 dark:text-gray-400 mt-2">Asset Map Team</p>
                 <p class="text-gray-600 dark:text-gray-400 mt-6">Clique no botão abaixo para cadastrar seu primeiro ativo!</p>
                 <div class="flex items-center justify-center">

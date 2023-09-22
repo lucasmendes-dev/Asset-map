@@ -23,10 +23,11 @@ require __DIR__.'/auth.php';
 
 
 //Asset routes
-
-Route::delete('/assets/{id}', [AssetController::class, 'destroy'])->name('assets.destroy');
-Route::get('/assets/edit/{id}', [AssetController::class, 'edit'])->name('assets.edit');
-Route::put('/assets/{id}', [AssetController::class, 'update'])->name('assets.update');
-Route::post('/assets/store', [AssetController::class, 'store'])->name('assets.store');
-Route::get('/assets/show/{id}', [AssetController::class, 'show'])->name('assets.show');
-Route::get('/assets', [AssetController::class, 'index'])->name('assets.index');
+Route::middleware('auth')->group(function () {
+    Route::delete('/assets/{id}', [AssetController::class, 'destroy'])->name('assets.destroy');
+    Route::get('/assets/edit/{id}', [AssetController::class, 'edit'])->name('assets.edit');
+    Route::put('/assets/{id}', [AssetController::class, 'update'])->name('assets.update');
+    Route::post('/assets/store', [AssetController::class, 'store'])->name('assets.store');
+    Route::get('/assets/show/{id}', [AssetController::class, 'show'])->name('assets.show');
+    Route::get('/assets', [AssetController::class, 'index'])->name('assets.index');
+});
