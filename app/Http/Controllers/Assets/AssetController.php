@@ -16,6 +16,8 @@ class AssetController extends Controller
     {
         $this->service = new APIService(Auth::user());
         $api = $this->service->processedData;
+        $stocks = Asset::where('user_id', Auth::user()->id)->where('type', 'stocks')->get(); 
+        $reit = Asset::where('user_id', Auth::user()->id)->where('type', 'reit')->get();
 
         switch ($api) {
             case $api === "error":
@@ -25,7 +27,7 @@ class AssetController extends Controller
                 return view('assets.first-in');
                 break;
             default:
-                return view('assets.index')->with(['assets' => $this->service->assets, 'api' => $api]);
+                return view('assets.index')->with(['assets' => $this->service->assets, 'stocks' => $stocks, 'reit' => $reit, 'api' => $api]);
                 break;
         }
     }
