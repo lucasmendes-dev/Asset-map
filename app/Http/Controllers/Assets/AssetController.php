@@ -15,9 +15,12 @@ class AssetController extends Controller
     public function index()
     {
         $this->service = new APIService(Auth::user());
-        $api = $this->service->processedData;
+        $api = $this->service->processedData; //dd($api);
+
         $stocks = Asset::where('user_id', Auth::user()->id)->where('type', 'stocks')->get(); 
         $reit = Asset::where('user_id', Auth::user()->id)->where('type', 'reit')->get();
+        
+        $totals = $this->service->totalValues;
 
         switch ($api) {
             case $api === "error":
@@ -27,15 +30,9 @@ class AssetController extends Controller
                 return view('assets.first-in');
                 break;
             default:
-                return view('assets.index')->with(['assets' => $this->service->assets, 'stocks' => $stocks, 'reit' => $reit, 'api' => $api]);
+                return view('assets.index')->with(['assets' => $this->service->assets, 'stocks' => $stocks, 'reit' => $reit, 'api' => $api, 'totals' => $totals]);
                 break;
         }
-    }
-
-    public function show(string $id)
-    {
-        $asset = Asset::findOrFail($id);
-        return view('assets.show', compact('asset'));
     }
 
     public function store(Request $request)

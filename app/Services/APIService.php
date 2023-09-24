@@ -9,14 +9,13 @@ use Illuminate\Support\Facades\Http;
 
 class APIService
 {
-    protected $user;
     public $assets;
     private $apiValues;
     public $processedData;
+    public $totalValues;
 
     public function __construct(User $user)
     {
-        $this->user = $user;
         $this->assets = Asset::where('user_id', $user->id)->get();
         $this->apiValues = $this->fetchData();
         $this->processedData = $this->checkApiValues(); //dd($this->processedData);
@@ -47,10 +46,10 @@ class APIService
         $totalPercentVariation = $this->getTotalPercentVariation();
         $totalMoneyVariation = $this->getTotalMoneyVariation();
         $patrimony = $this->getPatrimony();
-        $totalValues = $this->getTotalValues($totalMoneyVariation, $patrimony);
         $logo = $this->getAssetLogo();
+        $this->totalValues = $this->getTotalValues($dailyMoneyVariation, $patrimony);
 
-        $processedData = array_map(function ($current, $dailyVar, $dailyMoneyVar, $totalPercentVar, $totalMoneyVar, $patrimony, $total, $logo) {
+        $processedData = array_map(function ($current, $dailyVar, $dailyMoneyVar, $totalPercentVar, $totalMoneyVar, $patrimony, $logo) {
             return [
                 'current_price' => $current,
                 'daily_variation' => $dailyVar,
@@ -58,10 +57,9 @@ class APIService
                 'total_percent_variation' => $totalPercentVar,
                 'total_money_variation' => $totalMoneyVar,
                 'patrimony' => $patrimony,
-                'total_values' => $total,
-                'asset_logo' => $logo ? $logo : ""
+                'asset_logo' => $logo ? $logo : "https://s3-symbol-logo.tradingview.com/fii--big.svg" //default logo for reit if not found
             ];
-        }, $currentPrice, $dailyVariation, $dailyMoneyVariation, $totalPercentVariation, $totalMoneyVariation, $patrimony, $totalValues, $logo);
+        }, $currentPrice, $dailyVariation, $dailyMoneyVariation, $totalPercentVariation, $totalMoneyVariation, $patrimony, $logo);
 
         return $processedData;
     }
@@ -91,9 +89,9 @@ class APIService
         $assetQuantity = $this->assets->pluck('quantity');
         foreach ($this->apiValues as $key => $value) {
             if ($value['regularMarketOpen'] != 0) {
-                $daily[] = round(($value['regularMarketPrice'] - $value['regularMarketOpen']) * $assetQuantity[$key], 2);
+                $daily[] = number_format((($value['regularMarketPrice'] - $value['regularMarketOpen']) * $assetQuantity[$key]), 2, ',', '.');
             } else {
-                $daily[] = round(($value['regularMarketPrice'] - $value['regularMarketPreviousClose']) * $assetQuantity[$key], 2);
+                $daily[] = number_format((($value['regularMarketPrice'] - $value['regularMarketPreviousClose']) * $assetQuantity[$key]), 2, ',', '.');
             }
             
         }
@@ -119,7 +117,7 @@ class APIService
         $initialValue = $this->assets->pluck('average_price')->all();
 
         $result = array_map(function ($current, $qty, $initial) {
-            return round(($current - $initial) * $qty, 2);
+            return number_format(($current - $initial) * $qty, 2, ',', '.');
         }, $currentPrice, $assetQuantity, $initialValue);
 
         return $result;
@@ -131,16 +129,16 @@ class APIService
         $assetQuantity = $this->assets->pluck('quantity')->all();
 
         $result = array_map(function ($a, $b) {
-            return round($a * $b, 2);
+            return number_format($a * $b, 2, ',', '.'); //round($a * $b, 2);
         }, $currentPrice, $assetQuantity);
 
         return $result;
     }
 
-    private function getTotalValues($totalMoneyVariation, $patrimony): array
+    public function getTotalValues($totalMoneyVariation, $patrimony): array
     {
-        $totalMoney = round(array_sum($totalMoneyVariation), 2);
-        $patrim = round(array_sum($patrimony), 2);
+        $totalMoney = number_format(array_sum($totalMoneyVariation), 2, ',', '.');
+        $patrim = number_format(array_sum($patrimony), 2, ',', '.');
 
         return [$totalMoney, $patrim];
     }

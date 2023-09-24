@@ -31,9 +31,9 @@
                                     <div class="w-1/2">
                                         <label for="asset_type" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Type</label>
                                         <select name="asset_type" id="asset_type" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" value="{{ $asset->type }}">
-                                            <option value="stocks">Stocks</option>
-                                            <option value="reit">Reit</option>
-                                            <option value="crypto">Crypto</option>
+                                            <option value="stocks" @if($asset->type == 'stocks') selected @endif>Stocks</option>
+                                            <option value="reit" @if($asset->type == 'reit') selected @endif>Reit</option>
+                                            <option value="crypto" @if($asset->type == 'crypto') selected @endif>Crypto</option>
                                         </select>
                                     </div>
                                 </div>
