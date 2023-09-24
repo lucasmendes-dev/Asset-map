@@ -19,7 +19,7 @@ class AssetController extends Controller
 
         $stocks = Asset::where('user_id', Auth::user()->id)->where('type', 'stocks')->get(); 
         $reit = Asset::where('user_id', Auth::user()->id)->where('type', 'reit')->get();
-        
+
         $totals = $this->service->totalValues;
 
         switch ($api) {
